@@ -1,26 +1,37 @@
+
 import React from "react";
-import { TextField, Box } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { useGame } from "../context/GameContext";
 
-const PlayerForm = () => {
-  const { players, setPlayers } = useGame();
+export default function PlayerForm() {
+  const { players, setPlayers, gameMode } = useGame();
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setPlayers((prev) => ({ ...prev, [name]: value }));
+  };
 
   return (
-    <Box display="flex" gap={2} mt={2}>
-      <TextField
-        label="Player X Name"
-        value={players.X}
-        onChange={(e) => setPlayers(prev => ({ ...prev, X: e.target.value }))}
-        fullWidth
-      />
-      <TextField
-        label="Player O Name"
-        value={players.O}
-        onChange={(e) => setPlayers(prev => ({ ...prev, O: e.target.value }))}
-        fullWidth
-      />
+    <Box my={2}>
+      <Typography variant="h6">Player Info</Typography>
+      <Box display="flex" gap={2} flexDirection={{ xs: "column", sm: "row" }}>
+        <TextField
+          label="Player X Name"
+          name="X"
+          value={players.X}
+          onChange={handleChange}
+          fullWidth
+        />
+        {gameMode === "PVP" && (
+          <TextField
+            label="Player O Name"
+            name="O"
+            value={players.O}
+            onChange={handleChange}
+            fullWidth
+          />
+        )}
+      </Box>
     </Box>
   );
-};
-
-export default PlayerForm;
+}

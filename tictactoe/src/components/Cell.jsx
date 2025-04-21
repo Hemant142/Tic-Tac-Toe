@@ -13,12 +13,35 @@ export default function Cell({index,value}) {
         height: 80,
         fontSize: 24,
         fontWeight: "bold"
-        
       }}
     >
       {value}
     </Button>
   )
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

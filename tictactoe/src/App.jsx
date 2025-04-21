@@ -23,7 +23,7 @@ function App() {
             <Switch checked={darkMode} onChange={() => setDarkMode(!darkMode)} />
           </Box>
           <PlayerForm />
-          {/* <GridSizeSelector /> */}
+          <GridSizeSelector />
           <GameModeSelector />
 
           <PlayerStatus />

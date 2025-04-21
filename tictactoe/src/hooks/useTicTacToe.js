@@ -24,16 +24,50 @@ const useTicTacToe = () => {
     return null;
   };
 
-  const computerMove = (newBoard) => {
+  const findBestMove = (newBoard) => {
+    const opponent = "X";
+    const ai = "O";
+
+    // Try to win
+    for (let i = 0; i < newBoard.length; i++) {
+      if (!newBoard[i]) {
+        const testBoard = [...newBoard];
+        testBoard[i] = ai;
+        if (calculateWinner(testBoard) === ai) {
+          return i;
+        }
+      }
+    }
+
+    // Block opponent's win
+    for (let i = 0; i < newBoard.length; i++) {
+      if (!newBoard[i]) {
+        const testBoard = [...newBoard];
+        testBoard[i] = opponent;
+        if (calculateWinner(testBoard) === opponent) {
+          return i;
+        }
+      }
+    }
+
+    // Take center if available (for odd grid sizes)
+    const center = Math.floor(newBoard.length / 2);
+    if (newBoard[center] === null) return center;
+
+    // Otherwise take a random move
     const emptyIndices = newBoard.map((val, idx) => val === null ? idx : null).filter(i => i !== null);
-    const randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-    if (randomIndex !== undefined) {
+    return emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
+  };
+
+  const computerMove = (newBoard) => {
+    const bestMove = findBestMove(newBoard);
+    if (bestMove !== undefined) {
       setTimeout(() => {
         const updatedBoard = [...newBoard];
-        updatedBoard[randomIndex] = "O";
+        updatedBoard[bestMove] = "O";
         setBoard(updatedBoard);
         setIsXNext(true);
-      }, 500); // Delay for realism
+      }, 500);
     }
   };
 
@@ -45,7 +79,7 @@ const useTicTacToe = () => {
     setBoard(newBoard);
 
     if (gameMode === "PVC" && isXNext) {
-      setIsXNext(false); // Temporarily disable player input
+      setIsXNext(false);
       setTimeout(() => {
         computerMove(newBoard);
       }, 300);
